@@ -1,0 +1,36 @@
+---
+- name: Build and Run Docker Container
+  hosts: localhost
+  become: true
+
+  tasks:
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+      tags:
+        - docker
+
+    - name: Install Docker Compose
+      apt:
+        name: docker-compose
+        state: present
+      tags:
+        - docker
+
+    - name: Clone Dockerfiles Repository
+      git:
+        repo: https://github.com/your_username/your_dockerfiles_repo.git
+        dest: /path/to/your/directory
+      tags:
+        - docker
+
+    - name: Build Docker Image
+      command: "docker-compose -f /path/to/your/directory/docker-compose.yml build"
+      tags:
+        - docker
+
+    - name: Run Docker Container
+      command: "docker-compose -f /path/to/your/directory/docker-compose.yml up -d"
+      tags:
+        - docker
